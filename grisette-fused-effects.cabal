@@ -1,0 +1,114 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           grisette-fused-effects
+version:        0.1.0.0
+synopsis:       Support for fused-effects package with Grisette
+description:    Orphan instances and wrappers for fused-effects package with Grisette
+category:       Formal Methods, Theorem Provers, Symbolic Computation, SMT
+homepage:       https://github.com/lsrcz/grisette-fused-effects#readme
+bug-reports:    https://github.com/lsrcz/grisette-fused-effects/issues
+author:         Sirui Lu
+maintainer:     Sirui Lu (siruilu@cs.washington.edu)
+copyright:      2021-2022 Sirui Lu
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/lsrcz/grisette-fused-effects
+
+flag fast
+  description: Compile with O2 optimization
+  manual: False
+  default: True
+
+library
+  exposed-modules:
+      Grisette.Lib.Control.Carrier.Error.Church
+      Grisette.Lib.Control.Carrier.Error.Either
+      Grisette.Lib.Control.Carrier.Fail.Either
+      Grisette.Lib.Control.Carrier.Fresh.Church
+      Grisette.Lib.Control.Carrier.Fresh.Strict
+      Grisette.Lib.Control.Carrier.Lift
+      Grisette.Lib.Control.Carrier.Reader
+      Grisette.Lib.Control.Carrier.State.Church
+      Grisette.Lib.Control.Carrier.State.Lazy
+      Grisette.Lib.Control.Carrier.State.Strict
+      Grisette.Lib.Control.Carrier.Throw.Either
+      Grisette.Lib.Control.Carrier.Trace.Ignoring
+      Grisette.Lib.Control.Carrier.Writer.Church
+      Grisette.Lib.Control.Carrier.Writer.Strict
+      Grisette.Lib.Control.Effect.Catch
+      Grisette.Lib.Control.Effect.Fresh
+      Grisette.Lib.Control.Effect.Reader
+      Grisette.Lib.Control.Effect.State
+      Grisette.Lib.Control.Effect.Throw
+      Grisette.Lib.Control.Effect.Writer
+  other-modules:
+      Paths_grisette_fused_effects
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -ferror-spans
+  build-depends:
+      base >4.14 && <5
+    , fused-effects >=1.1.0.0
+    , grisette-core ==0.1.0.0
+    , mtl >=2.2.2
+    , transformers >=0.5.6.2
+  default-language: Haskell2010
+  if flag(fast)
+    ghc-options: -O2
+  else
+    ghc-options: -O0
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Grisette.Lib.Control.Carrier.Error.ChurchTests
+      Grisette.Lib.Control.Carrier.Error.Common
+      Grisette.Lib.Control.Carrier.Error.EitherTests
+      Grisette.Lib.Control.Carrier.Lift.Common
+      Grisette.Lib.Control.Carrier.Lift.LiftTests
+      Grisette.Lib.Control.Carrier.Reader.Common
+      Grisette.Lib.Control.Carrier.Reader.ReaderTests
+      Grisette.Lib.Control.Carrier.State.ChurchTests
+      Grisette.Lib.Control.Carrier.State.Common
+      Grisette.Lib.Control.Carrier.State.LazyTests
+      Grisette.Lib.Control.Carrier.State.StrictTests
+      Grisette.Lib.Control.Carrier.Throw.Common
+      Grisette.Lib.Control.Carrier.Throw.EitherTests
+      Grisette.Lib.Control.Carrier.Writer.ChurchTests
+      Grisette.Lib.Control.Carrier.Writer.Common
+      Grisette.Lib.Control.Carrier.Writer.StrictTests
+      Grisette.Lib.Control.Effect.CatchTests
+      Grisette.Lib.Control.Effect.FreshTests
+      Grisette.Lib.Control.Effect.ReaderTests
+      Grisette.Lib.Control.Effect.StateTests
+      Grisette.Lib.Control.Effect.ThrowTests
+      Grisette.Lib.Control.Effect.WriterTests
+      Paths_grisette_fused_effects
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -ferror-spans
+  build-depends:
+      base >4.14 && <5
+    , fused-effects >=1.1.0.0
+    , grisette-core
+    , grisette-fused-effects
+    , mtl >=2.2.2
+    , tasty >=1.1.0.3
+    , tasty-hunit >=0.10
+    , tasty-quickcheck >=0.10.1
+    , tasty-test-reporter >=0.1.1.2
+    , transformers >=0.5.6.2
+  default-language: Haskell2010
+  if flag(fast)
+    ghc-options: -O2
+  else
+    ghc-options: -O0

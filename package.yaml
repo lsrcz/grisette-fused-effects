@@ -1,18 +1,18 @@
-name: pizza-fused-effects
+name: grisette-fused-effects
 version: 0.1.0.0
-synopsis: Support for fused-effects package with Pizza
-description: Orphan instances and wrappers for fused-effects package with Pizza
+synopsis: Support for fused-effects package with Grisette
+description: Orphan instances and wrappers for fused-effects package with Grisette
 category: Formal Methods, Theorem Provers, Symbolic Computation, SMT
 author: "Sirui Lu"
 maintainer: Sirui Lu (siruilu@cs.washington.edu)
 license: BSD3
 license-file: LICENSE
-github: lsrcz/pizza-haskell
+github: lsrcz/grisette-fused-effects
 copyright: "2021-2022 Sirui Lu"
 
 dependencies:
 - base > 4.14 && < 5
-- pizza-core == 0.1.0.0
+- grisette-core == 0.1.0.0
 - mtl >= 2.2.2
 - transformers >= 0.5.6.2
 - fused-effects >= 1.1.0.0
@@ -42,8 +42,8 @@ tests:
     main: Main.hs
     source-dirs: test
     dependencies:
-      - pizza-core
-      - pizza-fused-effects
+      - grisette-core
+      - grisette-fused-effects
       - tasty >= 1.1.0.3
       - tasty-hunit >= 0.10
       - tasty-test-reporter >= 0.1.1.2
