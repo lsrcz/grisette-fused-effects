@@ -10,29 +10,29 @@ import Grisette.Core
 import Grisette.Lib.Control.Carrier.State.Church
 
 instance
-  (SymBoolOp bool, UnionLike bool m) =>
-  Mergeable bool (WriterC w m a)
+  (SymBoolOp bool, GUnionLike bool m) =>
+  GMergeable bool (WriterC w m a)
   where
-  mergingStrategy = wrapStrategy mergingStrategy WriterC (\(WriterC et) -> et)
+  gmergingStrategy = gwrapStrategy gmergingStrategy WriterC (\(WriterC et) -> et)
 
-instance (SymBoolOp bool, UnionLike bool m) => Mergeable1 bool (WriterC w m) where
-  liftMergingStrategy ms = wrapStrategy (liftMergingStrategy ms) WriterC (\(WriterC et) -> et)
+instance (SymBoolOp bool, GUnionLike bool m) => GMergeable1 bool (WriterC w m) where
+  liftGMergingStrategy ms = gwrapStrategy (liftGMergingStrategy ms) WriterC (\(WriterC et) -> et)
 
 instance
-  (SymBoolOp bool, UnionLike bool m) =>
-  SimpleMergeable bool (WriterC w m a)
+  (SymBoolOp bool, GUnionLike bool m) =>
+  GSimpleMergeable bool (WriterC w m a)
   where
-  mrgIte cond (WriterC t) (WriterC f) = WriterC $ mrgIte cond t f
+  gmrgIte cond (WriterC t) (WriterC f) = WriterC $ gmrgIte cond t f
 
 instance
-  (SymBoolOp bool, UnionLike bool m) =>
-  SimpleMergeable1 bool (WriterC w m)
+  (SymBoolOp bool, GUnionLike bool m) =>
+  GSimpleMergeable1 bool (WriterC w m)
   where
-  liftMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
+  liftGMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
 
 instance
-  (SymBoolOp bool, UnionLike bool m) =>
-  UnionLike bool (WriterC w m)
+  (SymBoolOp bool, GUnionLike bool m) =>
+  GUnionLike bool (WriterC w m)
   where
   mergeWithStrategy ms (WriterC et) = WriterC $ mergeWithStrategy ms et
   mrgIfWithStrategy ms cond (WriterC l) (WriterC r) = WriterC $ mrgIfWithStrategy ms cond l r
@@ -42,8 +42,8 @@ instance
 
 mrgRunWriter ::
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool b,
+    GUnionLike bool m,
+    GMergeable bool b,
     Monoid w
   ) =>
   (w -> a -> m b) ->
@@ -53,8 +53,8 @@ mrgRunWriter c (WriterC m) = mrgRunState c mempty m
 
 mrgExecWriter ::
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool w,
+    GUnionLike bool m,
+    GMergeable bool w,
     Monoid w,
     Functor m
   ) =>

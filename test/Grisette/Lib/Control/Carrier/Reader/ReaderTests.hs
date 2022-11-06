@@ -33,15 +33,15 @@ readerCarrierTests =
               @=? mrgIf (SSBool "c") (return 1) (return 2)
             runM (runReader 0 (rm1 (SSBool "c") (+ 1) (+ 1) :: R))
               @=? mrgReturn 1,
-          testCase "SimpleMergeable" $ do
+          testCase "GSimpleMergeable" $ do
             runM (runReader 0 (rs (SSBool "c") (+ 1) (+ 2) :: R))
               @=? mrgIf (SSBool "c") (return 1) (return 2)
             runM (runReader 0 (rs (SSBool "c") (+ 1) (+ 1) :: R))
               @=? mrgReturn 1,
-          testCase "SimpleMergeable1" $ do
+          testCase "GSimpleMergeable1" $ do
             runM (runReader 0 (rs (SSBool "c") (const $ SSBool "a") (const $ SSBool "b") :: RB))
               @=? mrgReturn (ITE (SSBool "c") (SSBool "a") (SSBool "b")),
-          testCase "UnionLike" $ do
+          testCase "GUnionLike" $ do
             runM (runReader 0 (ru (SSBool "c") (+ 1) (+ 2) :: R))
               @=? mrgIf (SSBool "c") (return 1) (return 2)
             runM (runReader 0 (ru (SSBool "c") (+ 1) (+ 1) :: R))

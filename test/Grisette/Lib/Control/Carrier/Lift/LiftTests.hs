@@ -31,15 +31,15 @@ liftTests =
               @=? mrgIf (SSBool "c") (return 1) (return 2)
             runM (lm1 (SSBool "c") 1 1 :: R)
               @=? mrgReturn 1,
-          testCase "SimpleMergeable" $ do
+          testCase "GSimpleMergeable" $ do
             runM (ls (SSBool "c") 1 2 :: R)
               @=? mrgIf (SSBool "c") (return 1) (return 2)
             runM (ls (SSBool "c") 1 1 :: R)
               @=? mrgReturn 1,
-          testCase "SimpleMergeable1" $ do
+          testCase "GSimpleMergeable1" $ do
             runM (ls (SSBool "c") (SSBool "a") (SSBool "b") :: RB)
               @=? mrgReturn (ITE (SSBool "c") (SSBool "a") (SSBool "b")),
-          testCase "UnionLike" $ do
+          testCase "GUnionLike" $ do
             runM (lu (SSBool "c") 1 2 :: R)
               @=? mrgIf (SSBool "c") (return 1) (return 2)
             runM (lu (SSBool "c") 1 1 :: R)

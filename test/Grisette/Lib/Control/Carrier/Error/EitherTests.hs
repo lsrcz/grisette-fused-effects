@@ -45,7 +45,7 @@ eitherErrorTests =
               @=? mrgReturn (Right 1)
             runM (runError (em1 (SSBool "c") (Right 1 :: Either Int Int) (Right 2) :: R))
               @=? mrgIf (SSBool "c") (return (Right 1)) (return (Right 2)),
-          testCase "SimpleMergeable" $ do
+          testCase "GSimpleMergeable" $ do
             runM (runError (es (SSBool "c") (Left (1 :: Int)) (Left 1) :: R))
               @=? mrgReturn (Left 1)
             runM (runError (es (SSBool "c") (Left (1 :: Int)) (Left 2) :: R))
@@ -56,7 +56,7 @@ eitherErrorTests =
               @=? mrgReturn (Right 1)
             runM (runError (es (SSBool "c") (Right 1 :: Either Int Int) (Right 2) :: R))
               @=? mrgIf (SSBool "c") (return (Right 1)) (return (Right 2)),
-          testCase "SimpleMergeable1" $ do
+          testCase "GSimpleMergeable1" $ do
             runM (runError (es1 (SSBool "c") (Left (1 :: Int)) (Left 1) :: RB))
               @=? mrgReturn (Left 1)
             runM (runError (es1 (SSBool "c") (Left (1 :: Int)) (Left 2) :: RB))
@@ -65,7 +65,7 @@ eitherErrorTests =
               @=? mrgIf (SSBool "c") (return (Left 1)) (return (Right $ SSBool "a"))
             runM (runError (es1 (SSBool "c") (Right $ SSBool "a" :: Either Int SBool) (Right $ SSBool "b") :: RB))
               @=? mrgReturn (Right $ ITE (SSBool "c") (SSBool "a") (SSBool "b")),
-          testCase "UnionLike" $ do
+          testCase "GUnionLike" $ do
             runM (runError (eu (SSBool "c") (Left (1 :: Int)) (Left 1) :: R))
               @=? mrgReturn (Left 1)
             runM (runError (eu (SSBool "c") (Left (1 :: Int)) (Left 2) :: R))

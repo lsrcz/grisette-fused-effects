@@ -31,15 +31,15 @@ lazyStateTests =
                 let s1 = sm1 (SSBool "c") (+ 2) (const $ SSBool "a") (* 2) (const $ SSBool "b") :: R
                 runM (runState 0 s1) @=? r0
                 runM (runState 2 s1) @=? r2,
-              testCase "SimpleMergeable" $ do
+              testCase "GSimpleMergeable" $ do
                 let s1 = ss (SSBool "c") (+ 2) (const $ SSBool "a") (* 2) (const $ SSBool "b") :: R
                 runM (runState 0 s1) @=? r0
                 runM (runState 2 s1) @=? r2,
-              testCase "SimpleMergeable1" $ do
+              testCase "GSimpleMergeable1" $ do
                 let s1 = ss1 (SSBool "c") (+ 2) (const $ SSBool "a") (* 2) (const $ SSBool "b") :: R
                 runM (runState 0 s1) @=? r0
                 runM (runState 2 s1) @=? r2,
-              testCase "UnionLike" $ do
+              testCase "GUnionLike" $ do
                 let s1 = su (SSBool "c") (+ 2) (const $ SSBool "a") (* 2) (const $ SSBool "b") :: R
                 runM (runState 0 s1) @=? r0
                 runM (runState 2 s1) @=? r2

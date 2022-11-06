@@ -10,44 +10,44 @@ import Grisette.Core
 
 instance
   ( SymBoolOp bool,
-    Mergeable1 bool m,
-    Mergeable bool a
+    GMergeable1 bool m,
+    GMergeable bool a
   ) =>
-  Mergeable bool (ReaderC r m a)
+  GMergeable bool (ReaderC r m a)
   where
-  mergingStrategy = mergingStrategy1
+  gmergingStrategy = gmergingStrategy1
 
 instance
   ( SymBoolOp bool,
-    Mergeable1 bool m
+    GMergeable1 bool m
   ) =>
-  Mergeable1 bool (ReaderC r m)
+  GMergeable1 bool (ReaderC r m)
   where
-  liftMergingStrategy ms =
-    wrapStrategy (liftMergingStrategy (liftMergingStrategy ms)) ReaderC (\(ReaderC rt) -> rt)
+  liftGMergingStrategy ms =
+    gwrapStrategy (liftGMergingStrategy (liftGMergingStrategy ms)) ReaderC (\(ReaderC rt) -> rt)
 
 instance
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool a
+    GUnionLike bool m,
+    GMergeable bool a
   ) =>
-  SimpleMergeable bool (ReaderC r m a)
+  GSimpleMergeable bool (ReaderC r m a)
   where
-  mrgIte = mrgIf
+  gmrgIte = mrgIf
 
 instance
   ( SymBoolOp bool,
-    UnionLike bool m
+    GUnionLike bool m
   ) =>
-  SimpleMergeable1 bool (ReaderC r m)
+  GSimpleMergeable1 bool (ReaderC r m)
   where
-  liftMrgIte = mrgIfWithStrategy . SimpleStrategy
+  liftGMrgIte = mrgIfWithStrategy . SimpleStrategy
 
 instance
   ( SymBoolOp bool,
-    UnionLike bool m
+    GUnionLike bool m
   ) =>
-  UnionLike bool (ReaderC r m)
+  GUnionLike bool (ReaderC r m)
   where
   mergeWithStrategy ms (ReaderC f) = ReaderC $ \r -> mergeWithStrategy ms (f r)
   mrgIfWithStrategy ms cond (ReaderC l) (ReaderC r) = ReaderC $
@@ -58,8 +58,8 @@ instance
 
 mrgRunReader ::
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool a
+    GUnionLike bool m,
+    GMergeable bool a
   ) =>
   r ->
   ReaderC r m a ->

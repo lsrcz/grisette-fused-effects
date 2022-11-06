@@ -10,29 +10,29 @@ import Grisette.Core
 import Grisette.Lib.Control.Carrier.Throw.Either ()
 
 instance
-  (SymBoolOp bool, Mergeable1 bool m, Mergeable bool a) =>
-  Mergeable bool (FailC m a)
+  (SymBoolOp bool, GMergeable1 bool m, GMergeable bool a) =>
+  GMergeable bool (FailC m a)
   where
-  mergingStrategy = wrapStrategy mergingStrategy FailC (\(FailC et) -> et)
+  gmergingStrategy = gwrapStrategy gmergingStrategy FailC (\(FailC et) -> et)
 
-instance (SymBoolOp bool, Mergeable1 bool m, Functor m) => Mergeable1 bool (FailC m) where
-  liftMergingStrategy ms = wrapStrategy (liftMergingStrategy ms) FailC (\(FailC et) -> et)
+instance (SymBoolOp bool, GMergeable1 bool m, Functor m) => GMergeable1 bool (FailC m) where
+  liftGMergingStrategy ms = gwrapStrategy (liftGMergingStrategy ms) FailC (\(FailC et) -> et)
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Mergeable bool a, Functor m) =>
-  SimpleMergeable bool (FailC m a)
+  (SymBoolOp bool, GUnionLike bool m, GMergeable bool a, Functor m) =>
+  GSimpleMergeable bool (FailC m a)
   where
-  mrgIte cond (FailC t) (FailC f) = FailC $ mrgIte cond t f
+  gmrgIte cond (FailC t) (FailC f) = FailC $ gmrgIte cond t f
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Functor m) =>
-  SimpleMergeable1 bool (FailC m)
+  (SymBoolOp bool, GUnionLike bool m, Functor m) =>
+  GSimpleMergeable1 bool (FailC m)
   where
-  liftMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
+  liftGMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Functor m) =>
-  UnionLike bool (FailC m)
+  (SymBoolOp bool, GUnionLike bool m, Functor m) =>
+  GUnionLike bool (FailC m)
   where
   mergeWithStrategy s (FailC et) = FailC $ mergeWithStrategy s et
   mrgIfWithStrategy s cond (FailC l) (FailC r) = FailC $ mrgIfWithStrategy s cond l r
@@ -42,8 +42,8 @@ instance
 
 mrgRunFail ::
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool a
+    GUnionLike bool m,
+    GMergeable bool a
   ) =>
   FailC m a ->
   m (Either String a)

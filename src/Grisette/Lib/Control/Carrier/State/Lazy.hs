@@ -9,44 +9,44 @@ import Control.Carrier.State.Lazy
 import Grisette.Core
 
 instance
-  (SymBoolOp bool, Mergeable bool s, Mergeable bool a, Mergeable1 bool m) =>
-  Mergeable bool (StateC s m a)
+  (SymBoolOp bool, GMergeable bool s, GMergeable bool a, GMergeable1 bool m) =>
+  GMergeable bool (StateC s m a)
   where
-  mergingStrategy = wrapStrategy (liftMergingStrategy mergingStrategy1) StateC (\(StateC f) -> f)
+  gmergingStrategy = gwrapStrategy (liftGMergingStrategy gmergingStrategy1) StateC (\(StateC f) -> f)
 
 instance
-  (SymBoolOp bool, Mergeable bool s, Mergeable1 bool m) =>
-  Mergeable1 bool (StateC s m)
+  (SymBoolOp bool, GMergeable bool s, GMergeable1 bool m) =>
+  GMergeable1 bool (StateC s m)
   where
-  liftMergingStrategy s = wrapStrategy (liftMergingStrategy (liftMergingStrategy (liftMergingStrategy s))) StateC (\(StateC f) -> f)
+  liftGMergingStrategy s = gwrapStrategy (liftGMergingStrategy (liftGMergingStrategy (liftGMergingStrategy s))) StateC (\(StateC f) -> f)
 
 instance
-  (SymBoolOp bool, Mergeable bool s, Mergeable bool a, UnionLike bool m) =>
-  SimpleMergeable bool (StateC s m a)
+  (SymBoolOp bool, GMergeable bool s, GMergeable bool a, GUnionLike bool m) =>
+  GSimpleMergeable bool (StateC s m a)
   where
-  mrgIte = mrgIf
+  gmrgIte = mrgIf
 
 instance
-  (SymBoolOp bool, Mergeable bool s, UnionLike bool m) =>
-  SimpleMergeable1 bool (StateC s m)
+  (SymBoolOp bool, GMergeable bool s, GUnionLike bool m) =>
+  GSimpleMergeable1 bool (StateC s m)
   where
-  liftMrgIte = mrgIfWithStrategy . SimpleStrategy
+  liftGMrgIte = mrgIfWithStrategy . SimpleStrategy
 
 instance
-  (SymBoolOp bool, Mergeable bool s, UnionLike bool m) =>
-  UnionLike bool (StateC s m)
+  (SymBoolOp bool, GMergeable bool s, GUnionLike bool m) =>
+  GUnionLike bool (StateC s m)
   where
-  mergeWithStrategy ms (StateC f) = StateC $ mergeWithStrategy (liftMergingStrategy ms) . f
-  mrgIfWithStrategy s cond (StateC l) (StateC r) = StateC $ \v -> mrgIfWithStrategy (liftMergingStrategy s) cond (l v) (r v)
-  mrgSingleWithStrategy ms a = StateC $ \s -> mrgSingleWithStrategy (liftMergingStrategy ms) (s, a)
+  mergeWithStrategy ms (StateC f) = StateC $ mergeWithStrategy (liftGMergingStrategy ms) . f
+  mrgIfWithStrategy s cond (StateC l) (StateC r) = StateC $ \v -> mrgIfWithStrategy (liftGMergingStrategy s) cond (l v) (r v)
+  mrgSingleWithStrategy ms a = StateC $ \s -> mrgSingleWithStrategy (liftGMergingStrategy ms) (s, a)
   single a = StateC $ \s -> single (s, a)
   unionIf cond (StateC l) (StateC r) = StateC $ \s -> unionIf cond (l s) (r s)
 
-mrgRunState :: (SymBoolOp bool, Mergeable bool s, Mergeable bool a, UnionLike bool m) => s -> StateC s m a -> m (s, a)
+mrgRunState :: (SymBoolOp bool, GMergeable bool s, GMergeable bool a, GUnionLike bool m) => s -> StateC s m a -> m (s, a)
 mrgRunState s = merge . runState s
 
-mrgEvalState :: (SymBoolOp bool, Mergeable bool a, UnionLike bool m, Functor m) => s -> StateC s m a -> m a
+mrgEvalState :: (SymBoolOp bool, GMergeable bool a, GUnionLike bool m, Functor m) => s -> StateC s m a -> m a
 mrgEvalState s = merge . fmap snd . runState s
 
-mrgExecState :: (SymBoolOp bool, Mergeable bool s, UnionLike bool m, Functor m) => s -> StateC s m a -> m s
+mrgExecState :: (SymBoolOp bool, GMergeable bool s, GUnionLike bool m, Functor m) => s -> StateC s m a -> m s
 mrgExecState s = merge . fmap fst . runState s

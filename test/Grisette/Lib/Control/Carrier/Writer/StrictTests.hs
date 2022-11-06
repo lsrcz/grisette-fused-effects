@@ -30,17 +30,17 @@ strictWriterTests =
               @=? mrgReturn (Sum 10, ITE (SSBool "c") (SSBool "a") (SSBool "b"))
             runM (runWriter (wm1 (SSBool "c") 10 (SSBool "a") 20 (SSBool "b") :: R))
               @=? mrgIf (SSBool "c") (mrgReturn (Sum 10, SSBool "a")) (mrgReturn (Sum 20, SSBool "b")),
-          testCase "SimpleMergeable" $ do
+          testCase "GSimpleMergeable" $ do
             runM (runWriter (ws (SSBool "c") 10 (SSBool "a") 10 (SSBool "b") :: R))
               @=? mrgReturn (Sum 10, ITE (SSBool "c") (SSBool "a") (SSBool "b"))
             runM (runWriter (ws (SSBool "c") 10 (SSBool "a") 20 (SSBool "b") :: R))
               @=? mrgIf (SSBool "c") (mrgReturn (Sum 10, SSBool "a")) (mrgReturn (Sum 20, SSBool "b")),
-          testCase "SimpleMergeable1" $ do
+          testCase "GSimpleMergeable1" $ do
             runM (runWriter (ws1 (SSBool "c") 10 (SSBool "a") 10 (SSBool "b") :: R))
               @=? mrgReturn (Sum 10, ITE (SSBool "c") (SSBool "a") (SSBool "b"))
             runM (runWriter (ws1 (SSBool "c") 10 (SSBool "a") 20 (SSBool "b") :: R))
               @=? mrgIf (SSBool "c") (mrgReturn (Sum 10, SSBool "a")) (mrgReturn (Sum 20, SSBool "b")),
-          testCase "UnionLike" $ do
+          testCase "GUnionLike" $ do
             runM (runWriter (wu (SSBool "c") 10 (SSBool "a") 10 (SSBool "b") :: R))
               @=? mrgReturn (Sum 10, ITE (SSBool "c") (SSBool "a") (SSBool "b"))
             runM (runWriter (wu (SSBool "c") 10 (SSBool "a") 20 (SSBool "b") :: R))

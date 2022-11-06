@@ -10,29 +10,29 @@ import Grisette.Core
 import Grisette.Lib.Control.Carrier.Error.Either ()
 
 instance
-  (SymBoolOp bool, Mergeable1 bool m, Mergeable bool e, Mergeable bool a) =>
-  Mergeable bool (ThrowC e m a)
+  (SymBoolOp bool, GMergeable1 bool m, GMergeable bool e, GMergeable bool a) =>
+  GMergeable bool (ThrowC e m a)
   where
-  mergingStrategy = wrapStrategy mergingStrategy ThrowC (\(ThrowC et) -> et)
+  gmergingStrategy = gwrapStrategy gmergingStrategy ThrowC (\(ThrowC et) -> et)
 
-instance (SymBoolOp bool, Mergeable1 bool m, Mergeable bool e, Functor m) => Mergeable1 bool (ThrowC e m) where
-  liftMergingStrategy ms = wrapStrategy (liftMergingStrategy ms) ThrowC (\(ThrowC et) -> et)
+instance (SymBoolOp bool, GMergeable1 bool m, GMergeable bool e, Functor m) => GMergeable1 bool (ThrowC e m) where
+  liftGMergingStrategy ms = gwrapStrategy (liftGMergingStrategy ms) ThrowC (\(ThrowC et) -> et)
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Mergeable bool e, Mergeable bool a, Functor m) =>
-  SimpleMergeable bool (ThrowC e m a)
+  (SymBoolOp bool, GUnionLike bool m, GMergeable bool e, GMergeable bool a, Functor m) =>
+  GSimpleMergeable bool (ThrowC e m a)
   where
-  mrgIte cond (ThrowC t) (ThrowC f) = ThrowC $ mrgIte cond t f
+  gmrgIte cond (ThrowC t) (ThrowC f) = ThrowC $ gmrgIte cond t f
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Mergeable bool e, Functor m) =>
-  SimpleMergeable1 bool (ThrowC e m)
+  (SymBoolOp bool, GUnionLike bool m, GMergeable bool e, Functor m) =>
+  GSimpleMergeable1 bool (ThrowC e m)
   where
-  liftMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
+  liftGMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Mergeable bool e, Functor m) =>
-  UnionLike bool (ThrowC e m)
+  (SymBoolOp bool, GUnionLike bool m, GMergeable bool e, Functor m) =>
+  GUnionLike bool (ThrowC e m)
   where
   mergeWithStrategy s (ThrowC et) = ThrowC $ mergeWithStrategy s et
   mrgIfWithStrategy s cond (ThrowC l) (ThrowC r) = ThrowC $ mrgIfWithStrategy s cond l r
@@ -42,9 +42,9 @@ instance
 
 mrgRunThrow ::
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool exc,
-    Mergeable bool a
+    GUnionLike bool m,
+    GMergeable bool exc,
+    GMergeable bool a
   ) =>
   ThrowC exc m a ->
   m (Either exc a)

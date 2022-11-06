@@ -6,52 +6,52 @@ module Grisette.Lib.Control.Carrier.Lift.Common where
 
 import Grisette.Core
 
-l :: (UnionLike bool m, SymBoolOp bool) => a -> m a
+l :: (GUnionLike bool m, SymBoolOp bool) => a -> m a
 l = single
 
 lm ::
   forall m bool a.
-  (UnionLike bool m, SymBoolOp bool, Mergeable bool (m a)) =>
+  (GUnionLike bool m, SymBoolOp bool, GMergeable bool (m a)) =>
   bool ->
   a ->
   a ->
   m a
 lm cond v1 v2 = ms cond (l v1) (l v2)
   where
-    SimpleStrategy ms = mergingStrategy :: MergingStrategy bool (m a)
+    SimpleStrategy ms = gmergingStrategy :: GMergingStrategy bool (m a)
 
 lm1 ::
   forall m bool a.
-  (UnionLike bool m, SymBoolOp bool, Mergeable bool a) =>
+  (GUnionLike bool m, SymBoolOp bool, GMergeable bool a) =>
   bool ->
   a ->
   a ->
   m a
 lm1 cond v1 v2 = ms cond (l v1) (l v2)
   where
-    SimpleStrategy ms = mergingStrategy1 :: MergingStrategy bool (m a)
+    SimpleStrategy ms = gmergingStrategy1 :: GMergingStrategy bool (m a)
 
 ls ::
   forall m bool a.
-  (UnionLike bool m, SymBoolOp bool, SimpleMergeable bool (m a)) =>
+  (GUnionLike bool m, SymBoolOp bool, GSimpleMergeable bool (m a)) =>
   bool ->
   a ->
   a ->
   m a
-ls cond v1 v2 = mrgIte cond (l v1) (l v2)
+ls cond v1 v2 = gmrgIte cond (l v1) (l v2)
 
 ls1 ::
   forall m bool a.
-  (UnionLike bool m, SymBoolOp bool, SimpleMergeable bool a) =>
+  (GUnionLike bool m, SymBoolOp bool, GSimpleMergeable bool a) =>
   bool ->
   a ->
   a ->
   m a
-ls1 cond v1 v2 = mrgIte1 cond (l v1) (l v2)
+ls1 cond v1 v2 = gmrgIte1 cond (l v1) (l v2)
 
 lu ::
   forall m bool a.
-  (UnionLike bool m, SymBoolOp bool, Mergeable bool a) =>
+  (GUnionLike bool m, SymBoolOp bool, GMergeable bool a) =>
   bool ->
   a ->
   a ->
@@ -60,7 +60,7 @@ lu cond v1 v2 = mrgIf cond (l v1) (l v2)
 
 lu' ::
   forall m bool a.
-  (UnionLike bool m, SymBoolOp bool) =>
+  (GUnionLike bool m, SymBoolOp bool) =>
   bool ->
   a ->
   a ->

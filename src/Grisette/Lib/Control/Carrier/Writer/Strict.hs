@@ -10,29 +10,29 @@ import Grisette.Core
 import Grisette.Lib.Control.Carrier.State.Strict
 
 instance
-  (SymBoolOp bool, Mergeable1 bool m, Mergeable bool w, Mergeable bool a) =>
-  Mergeable bool (WriterC w m a)
+  (SymBoolOp bool, GMergeable1 bool m, GMergeable bool w, GMergeable bool a) =>
+  GMergeable bool (WriterC w m a)
   where
-  mergingStrategy = wrapStrategy mergingStrategy WriterC (\(WriterC et) -> et)
+  gmergingStrategy = gwrapStrategy gmergingStrategy WriterC (\(WriterC et) -> et)
 
-instance (SymBoolOp bool, Mergeable1 bool m, Mergeable bool w, Functor m) => Mergeable1 bool (WriterC w m) where
-  liftMergingStrategy ms = wrapStrategy (liftMergingStrategy ms) WriterC (\(WriterC et) -> et)
+instance (SymBoolOp bool, GMergeable1 bool m, GMergeable bool w, Functor m) => GMergeable1 bool (WriterC w m) where
+  liftGMergingStrategy ms = gwrapStrategy (liftGMergingStrategy ms) WriterC (\(WriterC et) -> et)
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Mergeable bool w, Mergeable bool a, Functor m) =>
-  SimpleMergeable bool (WriterC w m a)
+  (SymBoolOp bool, GUnionLike bool m, GMergeable bool w, GMergeable bool a, Functor m) =>
+  GSimpleMergeable bool (WriterC w m a)
   where
-  mrgIte cond (WriterC t) (WriterC f) = WriterC $ mrgIte cond t f
+  gmrgIte cond (WriterC t) (WriterC f) = WriterC $ gmrgIte cond t f
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Mergeable bool w, Functor m) =>
-  SimpleMergeable1 bool (WriterC w m)
+  (SymBoolOp bool, GUnionLike bool m, GMergeable bool w, Functor m) =>
+  GSimpleMergeable1 bool (WriterC w m)
   where
-  liftMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
+  liftGMrgIte s = mrgIfWithStrategy (SimpleStrategy s)
 
 instance
-  (SymBoolOp bool, UnionLike bool m, Mergeable bool w, Functor m) =>
-  UnionLike bool (WriterC w m)
+  (SymBoolOp bool, GUnionLike bool m, GMergeable bool w, Functor m) =>
+  GUnionLike bool (WriterC w m)
   where
   mergeWithStrategy s (WriterC et) = WriterC $ mergeWithStrategy s et
   mrgIfWithStrategy s cond (WriterC l) (WriterC r) = WriterC $ mrgIfWithStrategy s cond l r
@@ -42,9 +42,9 @@ instance
 
 mrgRunWriter ::
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool w,
-    Mergeable bool a,
+    GUnionLike bool m,
+    GMergeable bool w,
+    GMergeable bool a,
     Monoid w
   ) =>
   WriterC w m a ->
@@ -53,8 +53,8 @@ mrgRunWriter (WriterC m) = mrgRunState mempty m
 
 mrgExecWriter ::
   ( SymBoolOp bool,
-    UnionLike bool m,
-    Mergeable bool w,
+    GUnionLike bool m,
+    GMergeable bool w,
     Monoid w,
     Functor m
   ) =>
